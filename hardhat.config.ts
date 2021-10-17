@@ -30,12 +30,6 @@ const config: HardhatUserConfig = {
       gas: 2100000,
       gasPrice: 8000000000
     },
-    hardhat: {
-      forking: {
-        url: ARCHIVE_URL,
-        blockNumber: 11239522
-      },
-    },
   },
   mocha: {
     timeout: 300 * 1e3,

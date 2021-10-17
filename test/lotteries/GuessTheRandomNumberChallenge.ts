@@ -10,7 +10,15 @@ before(async () => {
     accounts = await ethers.getSigners();
     eoa = accounts[0];
     const factory = await ethers.getContractFactory("GuessTheRandomNumberChallenge");
-    contract = factory.attach(`0xB5c4F6844b667584345c8b18c3E3e3d4e05A9Fe2`);
+
+    const network = await (await ethers.provider.getNetwork()).name
+    if (network === "ropsten") {
+        contract = factory.attach(`0xB5c4F6844b667584345c8b18c3E3e3d4e05A9Fe2`);
+    } else {
+        contract = await factory.deploy({
+            value: ethers.utils.parseEther("1"),
+        });
+    }
 });
 
 it("solves the challenge", async function () {
