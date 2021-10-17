@@ -1,7 +1,7 @@
-import { Contract, Signer } from "ethers";
+import { Contract, BigNumber } from "ethers";
 import { ethers } from "hardhat";
 
-export async function getContract(name: string, address: string): Promise<Contract> {
+export async function getContract(name: string, address: string, value: BigNumber): Promise<Contract> {
     const accounts = await ethers.getSigners();
     const eoa = accounts[0];
     const challengeFactory = await ethers.getContractFactory(name)
@@ -11,7 +11,7 @@ export async function getContract(name: string, address: string): Promise<Contra
         return challengeFactory.attach(address)
     } else {
         return challengeFactory.deploy({
-            value: ethers.utils.parseEther("1"),
+            value, //ethers.utils.parseEther("1"),
         });
     }
 }

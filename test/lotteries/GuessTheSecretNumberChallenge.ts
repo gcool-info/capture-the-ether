@@ -16,7 +16,7 @@ let getAnswerByBruteForce = () => {
 }
 
 before(async () => {
-    contract = await getContract("GuessTheSecretNumberChallenge", "0x89c575bdf6e611E4e5173fd9ceBAad41C9b95374")
+    contract = await getContract("GuessTheSecretNumberChallenge", "0x89c575bdf6e611E4e5173fd9ceBAad41C9b95374", ethers.utils.parseEther("1"))
 });
 
 it("solves the challenge", async () => {
