@@ -20,18 +20,25 @@ before(async () => {
     accounts = await ethers.getSigners();
     eoa = accounts[0];
     const factory = await ethers.getContractFactory("GuessTheSecretNumberChallenge")
-    contract = factory.attach(`0x89c575bdf6e611E4e5173fd9ceBAad41C9b95374`)
+
+    const network = await (await ethers.provider.getNetwork()).name
+    if (network === "ropsten") {
+        contract = factory.attach(`0x89c575bdf6e611E4e5173fd9ceBAad41C9b95374`)
+    } else {
+        contract = await factory.deploy({
+            value: ethers.utils.parseEther("1"),
+        });
+    }
 });
 
 it("solves the challenge", async () => {
     const answer = getAnswerByBruteForce();
-    const tx = await contract.guess(0, {
+    const tx = await contract.guess(answer, {
         value: ethers.utils.parseEther("1"),
     });
 
     const txHash = tx && tx.hash
     expect(txHash).to.not.be.undefined
-
 
     const isComplete = await contract.isComplete()
     expect(isComplete).to.be.true;
