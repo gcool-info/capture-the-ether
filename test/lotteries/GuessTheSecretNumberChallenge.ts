@@ -1,10 +1,9 @@
 import { ethers } from "hardhat";
-import { BigNumber, Contract, Signer } from "ethers";
+import { Contract } from "ethers";
 import { expect } from "chai";
+import { getContract } from "../utiils";
 
-let accounts: Signer[];
-let eoa: Signer;
-let contract: Contract; // challenge contract
+let contract: Contract;
 
 let getAnswerByBruteForce = () => {
     const wantHash = "0xdb81b4d58595fbbbb592d3661a34cdca14d7ab379441400cbfa1b78bc447c365";
@@ -17,18 +16,7 @@ let getAnswerByBruteForce = () => {
 }
 
 before(async () => {
-    accounts = await ethers.getSigners();
-    eoa = accounts[0];
-    const factory = await ethers.getContractFactory("GuessTheSecretNumberChallenge")
-
-    const network = await (await ethers.provider.getNetwork()).name
-    if (network === "ropsten") {
-        contract = factory.attach(`0x89c575bdf6e611E4e5173fd9ceBAad41C9b95374`)
-    } else {
-        contract = await factory.deploy({
-            value: ethers.utils.parseEther("1"),
-        });
-    }
+    contract = await getContract("GuessTheSecretNumberChallenge", "0x89c575bdf6e611E4e5173fd9ceBAad41C9b95374")
 });
 
 it("solves the challenge", async () => {

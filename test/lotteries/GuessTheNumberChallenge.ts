@@ -1,24 +1,12 @@
 import { ethers } from "hardhat";
-import { BigNumber, Contract, Signer } from "ethers";
+import { Contract } from "ethers";
 import { expect } from "chai";
+import { getContract } from "../utiils";
 
-let accounts: Signer[];
-let eoa: Signer;
 let contract: Contract; // challenge contract
 
 before(async () => {
-    accounts = await ethers.getSigners();
-    eoa = accounts[0];
-    const factory = await ethers.getContractFactory("GuessTheNumberChallenge")
-
-    const network = await (await ethers.provider.getNetwork()).name
-    if (network === "ropsten") {
-        contract = factory.attach(`0x826fC89961E0CFEC5949d81Db56d1a363e4bF29E`)
-    } else {
-        contract = await factory.deploy({
-            value: ethers.utils.parseEther("1"),
-        });
-    }
+    contract = await getContract("GuessTheNumberChallenge", "0x826fC89961E0CFEC5949d81Db56d1a363e4bF29E")
 });
 
 it("solves the challenge", async function () {

@@ -1,6 +1,6 @@
 // https://capturetheether.com/challenges/warmup/call-me/
 import { ethers } from "hardhat";
-import { BigNumber, Contract, Signer } from "ethers";
+import { Contract, Signer } from "ethers";
 import { expect } from "chai";
 
 let accounts: Signer[];
@@ -15,7 +15,7 @@ before(async () => {
   //   ``,
   //   accounts[0]
   // );
-  const factory =  await ethers.getContractFactory("CallMeChallenge")
+  const factory = await ethers.getContractFactory("CallMeChallenge")
   contract = factory.attach(`0x7e53cBe1AE1D8BCc1e4273ED31eb61bC4513C509`)
 });
 
