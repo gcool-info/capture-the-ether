@@ -11,7 +11,7 @@ export async function getContract(name: string, address: string, value: BigNumbe
         return challengeFactory.attach(address)
     } else {
         return challengeFactory.deploy({
-            value, //ethers.utils.parseEther("1"),
+            value,
         });
     }
 }
