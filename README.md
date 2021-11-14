@@ -27,7 +27,7 @@ Challenges are implemented as hardhat tests in [`/test`](./test).
 
 ```bash
 # run locally
-npx hardhat test test/warmup/call-me.ts
+npx hardhat test test/warmup/CallMeChallenge.ts
 # once everything works, run all txs on ropsten testnet to gain points
-npx hardhat test test/warmup/call-me.ts --network ropsten
+npx hardhat test test/warmup/CallMeChallenge.ts --network ropsten
 ```
