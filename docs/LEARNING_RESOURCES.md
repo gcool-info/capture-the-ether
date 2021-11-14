@@ -15,3 +15,4 @@ Collection of learning resources I've found useful.
 - [Etherium docs](https://ethereum.org/en/developers/docs/)
 - [cryptozombies: interactive game](https://cryptozombies.io/)
 - [Smart contracts](https://programtheblockchain.com/)
+- [Understanding the EVM](https://blog.qtum.org/diving-into-the-ethereum-vm-6e8d5d2f3c30)
